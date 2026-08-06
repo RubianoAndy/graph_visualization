@@ -17,7 +17,7 @@
 | **Asignatura** | Ciencia de Datos — Actividad 1 |
 | **Programa** | Maestría en Inteligencia Artificial |
 | **Universidad** | Universidad de La Salle |
-| **Herramientas** | Python (Matplotlib + pandas) y R (RStudio / VS Code) |
+| **Herramientas** | Python 3.12 (Matplotlib + pandas + NumPy) y R 4.6 (graficación base) |
 | **Año** | 2026 |
 | **Estado** | Completado |
 
@@ -28,7 +28,7 @@
 Laboratorio de **visualización de datos** sobre un conjunto de datos simulado de consumo energético mensual de **120 clientes** de una empresa distribuidora de energía (sectores Residencial, Comercial e Industrial). El proyecto aplica los **principios de diseño de gráficos** (integridad gráfica, razón dato-tinta, etiquetado completo, uso funcional del color) mediante:
 
 - **Estadística descriptiva** por sector (media, mediana, desviación estándar) y correlación de Pearson entre consumo y costo.
-- **Gráficos básicos bien diseñados** en Python y replicados en R: histograma, barras, dispersión con regresión, diagrama de caja y barras horizontales de participación.
+- **Gráficos básicos bien diseñados** en Python (histograma, barras, dispersión con regresión, diagrama de caja y barras horizontales de participación), con tres de ellos replicados en R.
 - **Análisis crítico de diseño:** una gráfica intencionalmente mal diseñada (torta con título vago, colores saturados y sin etiquetas) frente a su versión corregida (barras horizontales ordenadas).
 - **Verificación cruzada entre herramientas:** los estadísticos calculados en Python y en R coinciden (r = 0,998), validando el análisis.
 
@@ -45,26 +45,31 @@ Laboratorio de **visualización de datos** sobre un conjunto de datos simulado d
 
 ```
 .
-├── README.md                         # Este archivo
-├── requirements.txt                  # Dependencias de Python
+├── README.md                             # Este archivo
+├── requirements.txt                      # Dependencias de Python
+├── .gitignore                            # Excluye .venv/, __pycache__/, .Rhistory, .vscode/
 ├── data/
 │   ├── dataset/
-│   │   └── consumo_energia.csv       # Dataset generado (semilla 42, reproducible)
-│   └── processed/                    # Estadísticos calculados (stats_by_sector.csv, corr.txt)
+│   │   └── consumo_energia.csv           # Dataset generado (semilla 42, reproducible)
+│   └── processed/
+│       ├── stats_by_sector.csv           # Media, mediana, desviación, mín. y máx. por sector
+│       └── corr.txt                      # Correlación de Pearson consumo-costo
 ├── public/
 │   └── assets/
-│       └── images/                   # Logo institucional y foto del autor
+│       └── images/
+│           ├── Logo.png                  # Logo institucional
+│           ├── author/                   # Foto del autor
 │           └── figures/
-│               ├── python/           # Figuras generadas con Matplotlib
-│               │   ├── good_design/  # hist, bar, scatter, boxplot, barh
-│               │   └── bad_design/   # torta mal diseñada (análisis crítico)
-│               └── r/                # Figuras generadas con R
-│                   ├── good_design/  # boxplot, scatter, barh
-│                   └── bad_design/   # torta mal diseñada (análisis crítico)
+│               ├── python/               # Figuras generadas con Matplotlib
+│               │   ├── good_design/      # hist, bar, scatter, boxplot, barh (5)
+│               │   └── bad_design/       # torta mal diseñada (análisis crítico)
+│               └── r/                    # Figuras generadas con R base
+│                   ├── good_design/      # boxplot, scatter, barh (3)
+│                   └── bad_design/       # torta mal diseñada (análisis crítico)
 └── utils/
     └── codes/
-        ├── visualizations.py         # Genera dataset, estadísticos y figuras (Python)
-        └── visualizations.R          # Replica figuras y verifica estadísticos (R)
+        ├── visualizations.py             # Genera dataset, estadísticos y figuras (Python)
+        └── visualizations.R              # Replica figuras y verifica estadísticos (R)
 ```
 
 ---
@@ -86,7 +91,7 @@ El flujo es **secuencial**: Python genera los datos y sus figuras; R consume el 
 
 ### Fase 2 · Réplica y verificación en R
 
-[`visualizations.R`](utils/codes/visualizations.R) lee el CSV generado en la Fase 1 y replica el análisis con graficación base de R.
+[`visualizations.R`](utils/codes/visualizations.R) lee el CSV generado en la Fase 1 y replica en graficación base de R tres de las cinco figuras (las que permiten contrastar herramientas: boxplot, dispersión y barras horizontales), además de la torta defectuosa. Cada gráfica se dibuja en dos pasadas para que la cuadrícula quede **detrás** de los datos.
 
 | Salida | Ubicación | Descripción |
 |---|---|---|
@@ -96,8 +101,8 @@ El flujo es **secuencial**: Python genera los datos y sus figuras; R consume el 
 
 **Características clave:**
 
-- **Reproducibilidad:** semilla fija en la generación; cualquier ejecución produce datos y figuras idénticos.
-- **Rutas robustas:** Python resuelve las rutas desde la ubicación del script (`Path(__file__)`); R crea las carpetas de salida si no existen (`dir.create(recursive = TRUE)`).
+- **Reproducibilidad:** semilla fija (`default_rng(42)`) en la generación; cualquier ejecución produce datos y figuras idénticos.
+- **Rutas:** Python resuelve las suyas desde la ubicación del script (`Path(__file__)`), por lo que se puede invocar desde cualquier carpeta. R usa rutas **relativas a la raíz del proyecto**, así que debe ejecutarse desde ahí; ambos scripts crean las carpetas de salida si no existen (`mkdir(parents=True)` / `dir.create(recursive = TRUE)`).
 - **Verificación cruzada:** las medias por sector (248,3 / 878,1 / 2 654,0 kWh) y la correlación consumo-costo (**r = 0,998**) coinciden entre ambos lenguajes.
 
 ---
@@ -106,13 +111,15 @@ El flujo es **secuencial**: Python genera los datos y sus figuras; R consume el 
 
 ### Python
 
-> ⚠️ **Versión:** Python 3.10 o superior, con entorno virtual dedicado (`.venv`).
+> ⚠️ **Versión:** Python 3.10 o superior (probado en **3.12.10**), con entorno virtual dedicado (`.venv`).
 
-| Dependencia | Uso |
-|---|---|
-| `numpy` | Generación del dataset y cálculo numérico |
-| `pandas` | Estadística descriptiva y manejo del CSV |
-| `matplotlib` | Generación de todas las figuras de Python |
+| Dependencia | Versión probada | Uso |
+|---|---|---|
+| `numpy` | 2.5.1 | Generación del dataset y cálculo numérico |
+| `pandas` | 3.0.5 | Estadística descriptiva y manejo del CSV |
+| `matplotlib` | 3.11.1 | Generación de todas las figuras de Python |
+
+El resto de entradas de [`requirements.txt`](requirements.txt) son dependencias transitivas de Matplotlib y pandas.
 
 ### R
 
@@ -122,6 +129,8 @@ El flujo es **secuencial**: Python genera los datos y sus figuras; R consume el 
 ---
 
 ## 🛠️ Ejecución
+
+> Ambos comandos se lanzan **desde la raíz del proyecto** (`graph_visualization/`), porque el script de R resuelve sus rutas de forma relativa.
 
 ```bash
 # 1. Entorno de Python
@@ -137,6 +146,33 @@ Rscript utils/codes/visualizations.R
 ```
 
 En VS Code, el script de R también puede ejecutarse con **Ctrl + Shift + S** (source del archivo) o línea a línea con **Ctrl + Enter** desde la terminal R Interactive.
+
+---
+
+## 🖼️ Galería de Figuras
+
+### Gráficas bien diseñadas (Python · Matplotlib)
+
+| | |
+|---|---|
+| ![Histograma del consumo](public/assets/images/figures/python/good_design/hist_consumption.png) | ![Consumo promedio por sector](public/assets/images/figures/python/good_design/bar_mean_consumption_by_sector.png) |
+| **Histograma** — distribución asimétrica del consumo | **Barras** — media por sector con etiquetas de datos |
+| ![Dispersión consumo vs. costo](public/assets/images/figures/python/good_design/scatter_consumption_vs_cost.png) | ![Diagrama de caja por sector](public/assets/images/figures/python/good_design/boxplot_consumption_by_sector.png) |
+| **Dispersión + tendencia** — color por sector, r = 0,998 | **Diagrama de caja** — dispersión y valores atípicos |
+
+### Análisis crítico: mal diseño vs. corrección
+
+| Versión incorrecta | Versión corregida |
+|---|---|
+| ![Torta mal diseñada](public/assets/images/figures/python/bad_design/pie_sector_share_bad.png) | ![Barras horizontales ordenadas](public/assets/images/figures/python/good_design/barh_sector_share.png) |
+| Título vago (*"Consumo"*), sin unidades ni etiquetas de datos, colores saturados sin función, sombra y *explode* que distorsionan las áreas, ángulo de inicio arbitrario y leyenda separada de los sectores. | Título informativo, eje con unidad y escala 0–100 %, categorías ordenadas, un solo color y etiqueta numérica sobre cada barra: la comparación se lee por longitud, no por ángulo. |
+
+### Réplica en R (graficación base)
+
+| | | |
+|---|---|---|
+| ![Boxplot en R](public/assets/images/figures/r/good_design/boxplot_consumption_by_sector.png) | ![Dispersión en R](public/assets/images/figures/r/good_design/scatter_consumption_vs_cost.png) | ![Barras horizontales en R](public/assets/images/figures/r/good_design/barh_sector_share.png) |
+| Diagrama de caja | Dispersión con tendencia | Participación por sector |
 
 ---
 
