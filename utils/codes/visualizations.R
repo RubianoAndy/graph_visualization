@@ -1,6 +1,6 @@
 # ---- Rutas del proyecto ----
 data_path <- "data/dataset/consumo_energia.csv"
-figures_dir <- file.path("public", "assets", "figures", "r")
+figures_dir <- file.path("public", "assets", "images", "figures", "r")
 good_dir <- file.path(figures_dir, "good_design")
 bad_dir <- file.path(figures_dir, "bad_design")
 

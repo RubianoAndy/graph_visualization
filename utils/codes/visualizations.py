@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 PROJECT_ROOT = Path(__file__).resolve().parents[2]  # codes -> utils -> raiz
 DATA_DIR = PROJECT_ROOT / "data" / "dataset"
 PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
-FIGURES_DIR = PROJECT_ROOT / "public" / "assets" / "figures" / "python"
+FIGURES_DIR = PROJECT_ROOT / "public" / "assets" / "images" / "figures" / "python"
 GOOD_DIR = FIGURES_DIR / "good_design"
 BAD_DIR = FIGURES_DIR / "bad_design"
 
