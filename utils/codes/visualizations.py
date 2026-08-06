@@ -1,22 +1,15 @@
-# Laboratorio Actividad 1 - Visualización de Datos (Python + Matplotlib + pandas)
-# Ubicación del script: raiz/utils/codes/analysis.py
-# Estructura del proyecto:
-#   data/dataset/consumo_energia.csv       -> dataset generado (entrada de R)
-#   data/processed/                        -> estadísticos calculados
-#   public/assets/figures/good_design/     -> gráficas bien diseñadas
-#   public/assets/figures/bad_design/      -> gráfica mal diseñada (análisis crítico)
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# ---- Rutas del proyecto (relativas a la ubicación de este script) ----
 PROJECT_ROOT = Path(__file__).resolve().parents[2]  # codes -> utils -> raiz
 DATA_DIR = PROJECT_ROOT / "data" / "dataset"
 PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
-GOOD_DIR = PROJECT_ROOT / "public" / "assets" / "figures" / "good_design"
-BAD_DIR = PROJECT_ROOT / "public" / "assets" / "figures" / "bad_design"
+FIGURES_DIR = PROJECT_ROOT / "public" / "assets" / "figures" / "python"
+GOOD_DIR = FIGURES_DIR / "good_design"
+BAD_DIR = FIGURES_DIR / "bad_design"
 
 for d in (DATA_DIR, PROCESSED_DIR, GOOD_DIR, BAD_DIR):
     d.mkdir(parents=True, exist_ok=True)
@@ -28,7 +21,6 @@ plt.rcParams.update({
 
 rng = np.random.default_rng(42)
 
-# ---- Dataset simulado: consumo energético mensual de 120 clientes ----
 n = 120
 sectors = rng.choice(["Residencial", "Comercial", "Industrial"], size=n, p=[0.5, 0.3, 0.2])
 base = {"Residencial": 250, "Comercial": 900, "Industrial": 2500}
@@ -45,7 +37,6 @@ df = pd.DataFrame({
 })
 df.to_csv(DATA_DIR / "consumo_energia.csv", index=False)
 
-# ---- Estadística descriptiva ----
 stats = df.groupby("sector")["consumo_kwh"].agg(
     n="count", media="mean", mediana="median", desv_std="std", minimo="min", maximo="max"
 ).round(1)
@@ -57,6 +48,8 @@ print(f"Correlacion consumo-costo (Pearson): {corr:.3f}")
 
 # ============================================================
 # GRÁFICAS BIEN DISEÑADAS (good_design)
+# Principios: título informativo, ejes con unidades, eje desde
+# cero, cuadrícula sutil, colores sobrios, etiquetas de datos
 # ============================================================
 
 # ---- Histograma del consumo ----
@@ -112,6 +105,9 @@ fig.tight_layout(); fig.savefig(GOOD_DIR / "barh_sector_share.png"); plt.close(f
 
 # ============================================================
 # GRÁFICA MAL DISEÑADA (bad_design) - para análisis crítico
+# Errores intencionales: título vago sin unidades, sin etiquetas
+# de datos, colores saturados sin función, leyenda separada,
+# sombras/explode que distorsionan áreas, ángulo arbitrario
 # ============================================================
 
 # ---- Torta mal diseñada (versión INCORRECTA) ----
@@ -123,4 +119,4 @@ ax.legend(share.index, loc="center left", bbox_to_anchor=(1, 0.5), fontsize=8)
 ax.set_title("Consumo", fontsize=10)  # título vago, sin unidades ni etiquetas de datos
 fig.tight_layout(); fig.savefig(BAD_DIR / "pie_sector_share_bad.png"); plt.close(fig)
 
-print("OK - dataset, estadísticos y figuras generados")
+print("OK - dataset, estadísticos y figuras de Python generados")
