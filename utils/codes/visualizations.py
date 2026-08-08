@@ -24,6 +24,7 @@ for d in (DATA_DIR, PROCESSED_DIR, GOOD_DIR, BAD_DIR):
 plt.rcParams.update({
     "figure.dpi": 150, "font.size": 10, "axes.titlesize": 11,
     "axes.titleweight": "bold", "axes.grid": True, "grid.alpha": 0.3,
+    "axes.axisbelow": True,
 })
 
 rng = np.random.default_rng(42)
