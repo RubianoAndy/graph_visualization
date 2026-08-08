@@ -24,7 +24,7 @@ str(df)
 
 #' GRAFICAS BIEN DISEÑADAS (good_design).
 #'
-#' Principios aplicados: titulo informativo, ejes con unidades, cuadricula sutil
+#' Principios aplicados: título informativo, ejes con unidades, cuadricula sutil
 #' detras de los datos, colores sobrios y etiquetas de datos.
 
 #' Boxplot: consumo por sector.
