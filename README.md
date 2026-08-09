@@ -160,6 +160,12 @@ En VS Code, el script de R también puede ejecutarse con **Ctrl + Shift + S** (s
 | ![Dispersión consumo vs. costo](public/assets/images/figures/python/good_design/scatter_consumption_vs_cost.png) | ![Diagrama de caja por sector](public/assets/images/figures/python/good_design/boxplot_consumption_by_sector.png) |
 | **Dispersión + tendencia** — color por sector, r = 0,998 | **Diagrama de caja** — dispersión y valores atípicos |
 
+<div align="center">
+    <img src="public/assets/images/figures/python/good_design/barh_sector_share.png" width="760" alt="Participación por sector en el consumo total">
+</div>
+
+**Barras horizontales · participación por sector** — quinta figura del conjunto y versión corregida de la torta defectuosa. Categorías ordenadas de mayor a menor, eje con unidad y escala completa 0–100 %, un solo color y etiqueta numérica sobre cada barra: **Industrial 48,6 %**, **Comercial 35,7 %** y **Residencial 15,7 %**. Los 18 clientes industriales (15 % de la base) concentran casi la mitad del consumo.
+
 ### Análisis crítico: mal diseño vs. corrección
 
 | Versión incorrecta | Versión corregida |
@@ -173,6 +179,12 @@ En VS Code, el script de R también puede ejecutarse con **Ctrl + Shift + S** (s
 |---|---|---|
 | ![Boxplot en R](public/assets/images/figures/r/good_design/boxplot_consumption_by_sector.png) | ![Dispersión en R](public/assets/images/figures/r/good_design/scatter_consumption_vs_cost.png) | ![Barras horizontales en R](public/assets/images/figures/r/good_design/barh_sector_share.png) |
 | Diagrama de caja | Dispersión con tendencia | Participación por sector |
+
+<div align="center">
+    <img src="public/assets/images/figures/r/bad_design/pie_sector_share_bad.png" width="620" alt="Torta mal diseñada replicada en R">
+</div>
+
+**Torta defectuosa replicada en R** — el mal diseño no depende de la herramienta: con la paleta CMY por defecto de `pie()` se reproducen los mismos errores (título vago, ausencia de unidades y de etiquetas de datos, leyenda separada de las porciones y colores saturados sin función). Sin sombra ni *explode*, las áreas al menos no se distorsionan, pero la comparación sigue exigiendo estimar ángulos y saltar constantemente a la leyenda: cuánto separa a Industrial de Comercial solo puede aproximarse, mientras que en las barras horizontales esa diferencia (48,6 % vs. 35,7 %) se lee directamente sobre el eje.
 
 ---
 
